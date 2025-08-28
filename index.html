@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beni Affettin mi?</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #fff0f6;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    #question {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .rabbit-img {
+      width: 150px;
+      height: auto;
+      margin: 20px 0;
+    }
+
+    .corner-gif {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 120px;
+      height: auto;
+      z-index: 10;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #888;
+      color: white;
+    }
+
+    .heart {
+      position: fixed;
+      bottom: 0;
+      font-size: 24px;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .full-screen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      font-size: 40px !important;
+      border-radius: 0 !important;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="question">Beni affettin mi? 🐰</div>
+
+  <!-- Ortadaki sabit tavşan -->
+  <div id="rabbit">
+    <img src="https://pngimg.com/d/rabbit_PNG3785.png" alt="Cute Rabbit" class="rabbit-img" />
+  </div>
+
+  <!-- Sağ alt köşede zıplayan tavşan gif -->
+  <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" class="corner-gif" alt="Jumping Bunny" />
+
+  <div class="buttons">
+    <button id="yesBtn">Evet 💖</button>
+    <button id="noBtn">Hayır 🙈</button>
+  </div>
+
+  <div id="heartsContainer"></div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const question = document.getElementById("question");
+    const rabbit = document.getElementById("rabbit");
+    const buttons = document.querySelector(".buttons");
+    const heartsContainer = document.getElementById("heartsContainer");
+
+    let noCount = 0;
+
+    yesBtn.addEventListener("click", () => {
+      if (yesBtn.classList.contains("full-screen")) {
+        question.remove();
+        rabbit.remove();
+        buttons.remove();
+        document.querySelector(".corner-gif").remove();
+
+        setInterval(() => {
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.textContent = "💖";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.top = (90 + Math.random() * 20) + "vh";
+          heart.style.fontSize = Math.random() * 20 + 20 + "px";
+          heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+          heartsContainer.appendChild(heart);
+          setTimeout(() => heart.remove(), 5000);
+        }, 150);
+      } else {
+        for (let i = 0; i < 80; i++) {
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.textContent = "💖";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.top = (90 + Math.random() * 20) + "vh";
+          heart.style.fontSize = Math.random() * 20 + 20 + "px";
+          heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+          heartsContainer.appendChild(heart);
+          setTimeout(() => heart.remove(), 5000);
+        }
+      }
+    });
+
+    noBtn.addEventListener("click", () => {
+      noCount++;
+
+      let yesSize = 1 + noCount * 0.5;
+      let noSize = Math.max(1 - noCount * 0.1, 0.5);
+
+      yesBtn.style.transform = `scale(${yesSize})`;
+      noBtn.style.transform = `scale(${noSize}) translateX(${noCount * 10}px)`;
+
+      if (noCount === 1) noBtn.textContent = "Emin misin?";
+      else if (noCount === 2) noBtn.textContent = "Bir daha düşün!";
+      else if (noCount === 3) noBtn.textContent = "Gerçekten mi?";
+      else if (noCount === 4) noBtn.textContent = "Affettim cociğimi!!";
+      else if (noCount >= 5) {
+        yesBtn.classList.add("full-screen");
+        noBtn.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
